@@ -102,7 +102,7 @@ if uploaded_file is not None:
                     st.error(f"Bağlantı hatası: {e}")
 else:
     if not st.session_state.secim:
-        st.info("💡 Başlamak için yukarıdaki butonlardan birine tıklayın.")
+        st.info("💡 Click one of the buttons above to get started.")
 
 # Geliştirici Bilgisi (Footer)
 st.markdown("""
