@@ -9,11 +9,18 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Mobil uyumlu, geniş ve eşit boyutta buton tasarımları için özel CSS
+# Butonları ortalayan, genişleten ve şıklaştıran özel CSS stilleri
 st.markdown("""
     <style>
-    .stButton button {
+    /* Tüm butonları tam genişlikte, ortalanmış ve eşit boyda yapalım */
+    .stButton {
+        display: flex;
+        justify-content: center;
         width: 100%;
+    }
+    .stButton button {
+        width: 85% !important;
+        max-width: 400px;
         background-color: #2e7d32;
         color: white;
         font-size: 16px;
@@ -22,7 +29,8 @@ st.markdown("""
         border-radius: 12px;
         border: none;
         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        margin-bottom: 5px;
+        margin: 0 auto 10px auto !important;
+        display: block;
         transition: all 0.3s ease;
     }
     .stButton button:hover {
@@ -50,7 +58,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Başlık ve Alt Başlık
+# Başlık ve Alt Başlık (Ortalanmış)
 st.markdown("<h2 style='text-align: center; color: #2e7d32; margin-bottom: 0;'>🌿 AgroVision</h2>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; color: #666; font-size: 14px;'>Domates Yaprak ve Meyve Teşhis Sistemi</p>", unsafe_allow_html=True)
 st.write("---")
@@ -62,11 +70,11 @@ CLOUD_API_URL = "https://agrovision-api.onrender.com/api/analiz-et"
 if "secim" not in st.session_state:
     st.session_state.secim = None
 
-# Butonları tam genişlikte ve alt alta yerleştirelim
-if st.button("📷 Take a photo"):
+# Butonlar
+if st.button("📷 Camera"):
     st.session_state.secim = "kamera"
 
-if st.button("📁 Select a photo"):
+if st.button("📁 Galery"):
     st.session_state.secim = "galeri"
 
 uploaded_file = None
