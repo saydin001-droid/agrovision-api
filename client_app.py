@@ -61,7 +61,7 @@ if uploaded_file is not None:
             with st.spinner("AI Agronomist bitkiyi inceliyor, lütfen bekleyin..."):
                 try:
                     files = {"file": ("saha_gorseli.jpg", uploaded_file.getvalue(), "image/jpeg")}
-                    response = requests.post(CLOUD_API_URL, files=files, timeout=60)
+                    response = requests.post(CLOUD_API_URL, files=files, timeout=30)
                     
                     if response.status_code == 200:
                         data = response.json()
