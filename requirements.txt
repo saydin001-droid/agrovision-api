@@ -4,3 +4,5 @@ google-genai
 python-multipart
 requests
 streamlit
+google-generativeai
+python-multipart
