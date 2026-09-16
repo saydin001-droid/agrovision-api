@@ -9,16 +9,22 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Mobil dostu ve şık özel CSS stilleri
+# Mobil uyumlu ve butonları mobilde de yan yana tutan özel CSS stilleri
 st.markdown("""
     <style>
+    /* Mobilde sütunların alt alta kaymasını engeller, yan yana kalmasını sağlar */
+    [data-testid="column"] {
+        width: calc(50% - 0.5rem) !important;
+        flex: 1 1 calc(50% - 0.5rem) !important;
+        min-width: calc(50% - 0.5rem) !important;
+    }
     .stButton button {
         width: 100%;
         background-color: #2e7d32;
         color: white;
-        font-size: 15px;
+        font-size: 14px;
         font-weight: bold;
-        padding: 0.6rem;
+        padding: 0.6rem 0.2rem;
         border-radius: 12px;
         border: none;
         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
@@ -61,7 +67,7 @@ CLOUD_API_URL = "https://agrovision-api.onrender.com/api/analiz-et"
 if "secim" not in st.session_state:
     st.session_state.secim = None
 
-# İki butonu yan yana (eşit genişlikte sütunlar halinde) yerleştirelim
+# İki butonu yan yana yerleştirelim
 col1, col2 = st.columns(2)
 
 with col1:
