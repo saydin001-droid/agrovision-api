@@ -1,15 +1,15 @@
 import streamlit as st
 import requests
 
-# Sayfa yapılandırması (Mobil tarayıcılarda tam ekran ve şık durması için)
+# Sayfa yapılandırması
 st.set_page_config(
-    page_title="AgroVision Mobil", 
+    page_title="AgroVision Saha Asistanı", 
     page_icon="🌿", 
     layout="centered",
     initial_sidebar_state="collapsed"
 )
 
-# Mobil dostu özel CSS stilleri (Butonları büyütme ve kart tasarımı)
+# Mobil dostu özel CSS stilleri
 st.markdown("""
     <style>
     .stButton button {
@@ -39,33 +39,35 @@ st.markdown("""
 st.markdown("<h2 style='text-align: center; color: #2e7d32;'>🌿 AgroVision Saha Asistanı</h2>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; color: #666;'>Domates Yaprak ve Meyve Teşhis Sistemi</p>", unsafe_allow_html=True)
 
-# Buluttaki Render FastAPI adresiniz (Buraya kendi Render linkinizi yazın)
+# Buluttaki Render FastAPI adresiniz
 CLOUD_API_URL = "https://agrovision-api.onrender.com/api/analiz-et"
 
-# Fotoğraf yükleme alanı (Telefondan direkt kamera ile çekme seçeneği sunar)
-uploaded_file = st.file_uploader(
-    "Yaprak veya meyve fotoğraflayın...", 
-    type=["jpg", "jpeg", "png"],
-    label_visibility="collapsed"
-)
+# Kullanıcıya seçim hakkı: Kamera ile çek veya Dosya/Galeri yükle
+secim = st.radio("Görüntü Kaynağı Seçin:", ["📷 Kameradan Çek", "📁 Galeriden / Dosyadan Yükle"], horizontal=True)
+
+uploaded_file = None
+
+if secim == "📷 Kameradan Çek":
+    uploaded_file = st.camera_input("Bitkiyi kadraja yerleştirin ve çekin")
+else:
+    uploaded_file = st.file_uploader("Dosya seçin...", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
-    # Fotoğrafı ekranda şık ve ortalanmış göster
-    st.image(uploaded_file, caption="Saha Görüntüsü", use_container_width=True)
+    # Seçilen veya çekilen görseli göster
+    st.image(uploaded_file, caption="Aktarılan Saha Görseli", use_container_width=True)
     
-    st.write("") # Boşluk
+    st.write("") 
     
-    if st.button("🚀 Yapay Zekayı Çalıştır"):
-        with st.spinner("Bitki patoloğu inceliyor, lütfen bekleyin..."):
+    if st.button("🚀 AgroVision ile Analiz Et"):
+        with st.spinner("Yapay zeka patolog bitkiyi inceliyor, lütfen bekleyin..."):
             try:
-                files = {"file": (uploaded_file.name, uploaded_file.getvalue(), uploaded_file.type)}
+                files = {"file": ("saha_gorseli.jpg", uploaded_file.getvalue(), "image/jpeg")}
                 response = requests.post(CLOUD_API_URL, files=files, timeout=30)
                 
                 if response.status_code == 200:
                     data = response.json()
                     raw_result = data.get("analiz_sonucu", "{}")
                     
-                    # Başarılı analiz kartı
                     st.success("Analiz Başarıyla Tamamlandı!")
                     
                     st.markdown(f"""
@@ -83,4 +85,4 @@ if uploaded_file is not None:
             except Exception as e:
                 st.error(f"Bağlantı hatası: {e}")
 else:
-    st.info("💡 Başlamak için yukarıdaki alandan bir fotoğraf yükleyin veya telefon kameranızla çekim yapın.")
+    st.info("💡 Kamerayı açarak veya fotoğraf yükleyerek analizi başlatabilirsiniz.")
