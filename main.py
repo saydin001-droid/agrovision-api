@@ -5,9 +5,16 @@ import os
 
 app = FastAPI(title="AgroVision AI Backend", version="1.0")
 
-# API anahtarı çevre değişkeninden (Environment Variable) güvenli bir şekilde alınır.
-# Kodun içinde açıkça yer almadığı için GitHub güvenliği tamamiyle korunur.
 client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
+
+# Tarayıcıdan ana adrese girildiğinde 404 yerine şık bir karşılama versin:
+@app.get("/")
+async def root():
+    return {
+        "durum": "aktif", 
+        "asistan": "AgroVision AI Backend", 
+        "dokuman_ve_test_icin": "/docs"
+    }
 
 AGROVISION_SYSTEM_PROMPT = """
 Sen uluslararası alanda tanınan uzman bir domates patoloğu, virolog ve bitki koruma uzmanısın. 
@@ -58,4 +65,5 @@ async def gorsel_analizet(file: UploadFile = File(...)):
 
 if __name__ == "__main__":
     import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
     uvicorn.run(app, host="0.0.0.0", port=8000)
