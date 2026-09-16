@@ -3,7 +3,7 @@ import requests
 
 # Sayfa yapılandırması
 st.set_page_config(
-    page_title="AgroVision Saha Asistanı", 
+    page_title="AgroVision", 
     page_icon="🌿", 
     layout="centered",
     initial_sidebar_state="collapsed"
@@ -33,7 +33,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Başlık ve Alt Başlık
-st.markdown("<h2 style='text-align: center; color: #2e7d32; margin-bottom: 0;'>🌿 AgroVision Saha Asistanı</h2>", unsafe_allow_html=True)
+st.markdown("<h2 style='text-align: center; color: #2e7d32; margin-bottom: 0;'>🌿 AgroVision</h2>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; color: #666; font-size: 14px;'>Tomato Symptom Diagnosis System</p>", unsafe_allow_html=True)
 st.write("---")
 
@@ -45,7 +45,7 @@ _, center_col, _ = st.columns([1, 6, 1])
 
 with center_col:
     uploaded_file = st.file_uploader(
-        "📸 Fotoğraf Yükle / Çek", 
+        "📸 Upload / Take a photo", 
         type=["jpg", "jpeg", "png"]
     )
 
@@ -91,6 +91,6 @@ else:
 # Geliştirici Bilgisi (Footer)
 st.markdown("""
     <div class="footer">
-        Geliştirici: <b>Serkan Aydın</b> | AgroVision AI Sistemleri
+        Developer: <b>saydin001-droid</b> | AgroVision AI Sistemleri
     </div>
 """, unsafe_allow_html=True)
