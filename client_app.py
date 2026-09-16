@@ -3,7 +3,7 @@ import requests
 
 # Sayfa yapılandırması
 st.set_page_config(
-    page_title="AgroVision", 
+    page_title="AgroVision Saha Asistanı", 
     page_icon="🌿", 
     layout="centered",
     initial_sidebar_state="collapsed"
@@ -33,47 +33,30 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Başlık ve Alt Başlık
-st.markdown("<h2 style='text-align: center; color: #2e7d32; margin-bottom: 0;'>🌿 AgroVision</h2>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; color: #666; font-size: 14px;'>AI-Powered Tomato Pathology & Diagnosis System</p>", unsafe_allow_html=True)
+st.markdown("<h2 style='text-align: center; color: #2e7d32; margin-bottom: 0;'>🌿 AgroVision Saha Asistanı</h2>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #666; font-size: 14px;'>Tomato Symptom Diagnosis System</p>", unsafe_allow_html=True)
 st.write("---")
 
 # Buluttaki Render FastAPI adresiniz
 CLOUD_API_URL = "https://agrovision-api.onrender.com/api/analiz-et"
 
-# Session State ile seçimi takip edelim
-if "secim" not in st.session_state:
-    st.session_state.secim = None
-
-# Butonları sayfada mükemmel ortalamak için orta sütun yapısı kullanalım
+# Tek ve merkezi yükleme alanı (Mobilde hem kamera hem galeri seçeneği sunar)
 _, center_col, _ = st.columns([1, 6, 1])
 
 with center_col:
-    if st.button("📷 Take a photo", use_container_width=True):
-        st.session_state.secim = "kamera"
-    
-    if st.button("📁 Select from gallery", use_container_width=True):
-        st.session_state.secim = "galeri"
+    uploaded_file = st.file_uploader(
+        "📸 Fotoğraf Yükle / Çek", 
+        type=["jpg", "jpeg", "png"]
+    )
 
-uploaded_file = None
-
-# Seçime göre ilgili aracı aktif edelim
-if st.session_state.secim == "kamera":
-    st.write("")
-    uploaded_file = st.camera_input("Bitkiyi kadraja yerleştirin")
-elif st.session_state.secim == "galeri":
-    st.write("")
-    uploaded_file = st.file_uploader("Galeriden fotoğraf seçin", type=["jpg", "jpeg", "png"])
-
-# Fotoğraf yüklendiyse analiz aşaması
+# Fotoğraf yüklendiyse önizleme ve analiz aşaması
 if uploaded_file is not None:
     st.write("---")
-    st.image(uploaded_file, caption="Aktarılan Saha Görseli", use_container_width=True)
-    
-    st.write("") 
-    
-    # Analiz butonunu da ortalayalım
-    _, btn_col, _ = st.columns([1, 6, 1])
-    with btn_col:
+    _, img_col, _ = st.columns([1, 6, 1])
+    with img_col:
+        st.image(uploaded_file, caption="Aktarılan Saha Görseli", use_container_width=True)
+        st.write("") 
+        
         if st.button("🚀 AgroVision ile Analiz Et", type="primary", use_container_width=True):
             with st.spinner("Yapay zeka patolog bitkiyi inceliyor, lütfen bekleyin..."):
                 try:
@@ -101,12 +84,13 @@ if uploaded_file is not None:
                 except Exception as e:
                     st.error(f"Bağlantı hatası: {e}")
 else:
-    if not st.session_state.secim:
-        st.info("💡 Click one of the buttons above to get started.")
+    _, info_col, _ = st.columns([1, 6, 1])
+    with info_col:
+        st.info("💡 Click above to upload or capture a photo.")
 
 # Geliştirici Bilgisi (Footer)
 st.markdown("""
     <div class="footer">
-        Developer: <b>saydin001-droid</b> | AgroVision AI Systems
+        Geliştirici: <b>Serkan Aydın</b> | AgroVision AI Sistemleri
     </div>
 """, unsafe_allow_html=True)
