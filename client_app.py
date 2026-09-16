@@ -107,6 +107,6 @@ else:
 # Geliştirici Bilgisi (Footer)
 st.markdown("""
     <div class="footer">
-        Developer: <b>saydin001-droid</b> | AgroVision AI Sistemleri
+        Developer: <b>saydin001-droid</b> | AgroVision AI Systems
     </div>
 """, unsafe_allow_html=True)
