@@ -3,41 +3,15 @@ import requests
 
 # Sayfa yapılandırması
 st.set_page_config(
-    page_title="AgroVision", 
+    page_title="AgroVision Saha Asistanı", 
     page_icon="🌿", 
     layout="centered",
     initial_sidebar_state="collapsed"
 )
 
-# Butonları ortalayan, genişleten ve şıklaştıran özel CSS stilleri
+# Genel kart ve footer stilleri
 st.markdown("""
     <style>
-    /* Tüm butonları tam genişlikte, ortalanmış ve eşit boyda yapalım */
-    .stButton {
-        display: flex;
-        justify-content: center;
-        width: 100%;
-    }
-    .stButton button {
-        width: 85% !important;
-        max-width: 400px;
-        background-color: #2e7d32;
-        color: white;
-        font-size: 16px;
-        font-weight: bold;
-        padding: 0.8rem 1rem;
-        border-radius: 12px;
-        border: none;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        margin: 0 auto 10px auto !important;
-        display: block;
-        transition: all 0.3s ease;
-    }
-    .stButton button:hover {
-        background-color: #1b5e20;
-        color: white;
-        box-shadow: 0 6px 8px rgba(0,0,0,0.15);
-    }
     .report-card {
         background-color: #f1f8e9;
         padding: 20px;
@@ -58,8 +32,8 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Başlık ve Alt Başlık (Ortalanmış)
-st.markdown("<h2 style='text-align: center; color: #2e7d32; margin-bottom: 0;'>🌿 AgroVision</h2>", unsafe_allow_html=True)
+# Başlık ve Alt Başlık
+st.markdown("<h2 style='text-align: center; color: #2e7d32; margin-bottom: 0;'>🌿 AgroVision Saha Asistanı</h2>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; color: #666; font-size: 14px;'>Domates Yaprak ve Meyve Teşhis Sistemi</p>", unsafe_allow_html=True)
 st.write("---")
 
@@ -70,12 +44,15 @@ CLOUD_API_URL = "https://agrovision-api.onrender.com/api/analiz-et"
 if "secim" not in st.session_state:
     st.session_state.secim = None
 
-# Butonlar
-if st.button("📷 Camera"):
-    st.session_state.secim = "kamera"
+# Butonları sayfada mükemmel ortalamak için orta sütun yapısı kullanalım
+_, center_col, _ = st.columns([1, 6, 1])
 
-if st.button("📁 Galery"):
-    st.session_state.secim = "galeri"
+with center_col:
+    if st.button("📷 Kamera ile Canlı Çekim", use_container_width=True):
+        st.session_state.secim = "kamera"
+    
+    if st.button("📁 Galeriden Fotoğraf Seç", use_container_width=True):
+        st.session_state.secim = "galeri"
 
 uploaded_file = None
 
@@ -94,32 +71,35 @@ if uploaded_file is not None:
     
     st.write("") 
     
-    if st.button("🚀 AgroVision ile Analiz Et", type="primary"):
-        with st.spinner("Yapay zeka patolog bitkiyi inceliyor, lütfen bekleyin..."):
-            try:
-                files = {"file": ("saha_gorseli.jpg", uploaded_file.getvalue(), "image/jpeg")}
-                response = requests.post(CLOUD_API_URL, files=files, timeout=30)
-                
-                if response.status_code == 200:
-                    data = response.json()
-                    raw_result = data.get("analiz_sonucu", "{}")
+    # Analiz butonunu da ortalayalım
+    _, btn_col, _ = st.columns([1, 6, 1])
+    with btn_col:
+        if st.button("🚀 AgroVision ile Analiz Et", type="primary", use_container_width=True):
+            with st.spinner("Yapay zeka patolog bitkiyi inceliyor, lütfen bekleyin..."):
+                try:
+                    files = {"file": ("saha_gorseli.jpg", uploaded_file.getvalue(), "image/jpeg")}
+                    response = requests.post(CLOUD_API_URL, files=files, timeout=30)
                     
-                    st.success("Analiz Başarıyla Tamamlandı!")
-                    
-                    st.markdown(f"""
-                    <div class="report-card">
-                        <h3>🔬 Teşhis Raporu</h3>
-                        <p>{raw_result}</p>
-                    </div>
-                    """, unsafe_allow_html=True)
-                    
-                else:
-                    st.error(f"Sunucu Hatası: {response.status_code}. Lütfen birkaç saniye sonra tekrar deneyin.")
-                    
-            except requests.exceptions.Timeout:
-                st.error("Zaman aşımı! Yapay zeka sunucusu şu an yoğun, lütfen tekrar deneyin.")
-            except Exception as e:
-                st.error(f"Bağlantı hatası: {e}")
+                    if response.status_code == 200:
+                        data = response.json()
+                        raw_result = data.get("analiz_sonucu", "{}")
+                        
+                        st.success("Analiz Başarıyla Tamamlandı!")
+                        
+                        st.markdown(f"""
+                        <div class="report-card">
+                            <h3>🔬 Teşhis Raporu</h3>
+                            <p>{raw_result}</p>
+                        </div>
+                        """, unsafe_allow_html=True)
+                        
+                    else:
+                        st.error(f"Sunucu Hatası: {response.status_code}. Lütfen birkaç saniye sonra tekrar deneyin.")
+                        
+                except requests.exceptions.Timeout:
+                    st.error("Zaman aşımı! Yapay zeka sunucusu şu an yoğun, lütfen tekrar deneyin.")
+                except Exception as e:
+                    st.error(f"Bağlantı hatası: {e}")
 else:
     if not st.session_state.secim:
         st.info("💡 Başlamak için yukarıdaki butonlardan birine tıklayın.")
