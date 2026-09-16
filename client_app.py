@@ -9,14 +9,14 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Mobil dostu özel CSS stilleri (Butonları görsel olarak öne çıkarma)
+# Mobil dostu özel CSS stilleri (Buton tasarımları)
 st.markdown("""
     <style>
     .stButton button {
         width: 100%;
         background-color: #2e7d32;
         color: white;
-        font-size: 18px;
+        font-size: 16px;
         font-weight: bold;
         padding: 0.75rem;
         border-radius: 12px;
@@ -42,24 +42,30 @@ st.markdown("<p style='text-align: center; color: #666;'>Domates Yaprak ve Meyve
 # Buluttaki Render FastAPI adresiniz
 CLOUD_API_URL = "https://agrovision-api.onrender.com/api/analiz-et"
 
-# İki ayrı sütun halinde iki net buton / giriş alanı
+# Session State ile hangi modun seçildiğini takip edelim
+if "secim" not in st.session_state:
+    st.session_state.secim = None
+
+# Ana ekranda sadece iki net buton gösterelim
 col1, col2 = st.columns(2)
+with col1:
+    if st.button("📷 Kamera ile Çek"):
+        st.session_state.secim = "kamera"
+with col2:
+    if st.button("📁 Dosya / Galeri"):
+        st.session_state.secim = "galeri"
 
 uploaded_file = None
 
-with col1:
-    st.markdown("### 📷 Canlı Çekim")
-    camera_file = st.camera_input("Kamerayı Aç", label_visibility="collapsed")
-    if camera_file is not None:
-        uploaded_file = camera_file
+# Sadece kullanıcı ilgili butona bastıktan sonra ilgili giriş aracı ekranda açılır
+if st.session_state.secim == "kamera":
+    st.write("---")
+    uploaded_file = st.camera_input("Bitkiyi kadraja yerleştirin")
+elif st.session_state.secim == "galeri":
+    st.write("---")
+    uploaded_file = st.file_uploader("Galeriden fotoğraf seçin", type=["jpg", "jpeg", "png"])
 
-with col2:
-    st.markdown("### 📁 Dosya / Galeri")
-    gallery_file = st.file_uploader("Fotoğraf Seç", type=["jpg", "jpeg", "png"], label_visibility="collapsed")
-    if gallery_file is not None:
-        uploaded_file = gallery_file
-
-# Eğer herhangi bir yoldan görsel geldiyse
+# Fotoğraf elde edildiyse analiz aşaması
 if uploaded_file is not None:
     st.write("---")
     st.image(uploaded_file, caption="Aktarılan Saha Görseli", use_container_width=True)
@@ -93,4 +99,5 @@ if uploaded_file is not None:
             except Exception as e:
                 st.error(f"Bağlantı hatası: {e}")
 else:
-    st.info("💡 Yukarıdan ister kameranızı kullanarak anlık çekim yapın ister galeriden mevcut bir fotoğrafınızı seçin.")
+    if not st.session_state.secim:
+        st.info("💡 Başlamak için yukarıdaki butonlardan birine tıklayın.")
