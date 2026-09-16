@@ -4,7 +4,7 @@ import requests
 # Sayfa yapılandırması (Büyüteç ve yaprak simgesi ile)
 st.set_page_config(
     page_title="AgroVision", 
-    page_icon="🔍🍃", 
+    page_icon="🍃", 
     layout="centered",
     initial_sidebar_state="collapsed"
 )
@@ -33,7 +33,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Başlık ve Alt Başlık (Büyüteç ve yaprak ikonlarıyla)
-st.markdown("<h2 style='text-align: center; color: #2e7d32; margin-bottom: 0;'>🔍🍃 AgroVision</h2>", unsafe_allow_html=True)
+st.markdown("<h2 style='text-align: center; color: #2e7d32; margin-bottom: 0;'>🍃 AgroVision</h2>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; color: #666; font-size: 14px;'>Tomato Symptom Diagnosis System</p>", unsafe_allow_html=True)
 st.write("---")
 
