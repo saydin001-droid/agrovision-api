@@ -3,7 +3,7 @@ import requests
 
 # Sayfa yapılandırması
 st.set_page_config(
-    page_title="AgroVision Saha Asistanı", 
+    page_title="AgroVision", 
     page_icon="🌿", 
     layout="centered",
     initial_sidebar_state="collapsed"
@@ -33,7 +33,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Başlık ve Alt Başlık
-st.markdown("<h2 style='text-align: center; color: #2e7d32; margin-bottom: 0;'>🌿 AgroVision Saha Asistanı</h2>", unsafe_allow_html=True)
+st.markdown("<h2 style='text-align: center; color: #2e7d32; margin-bottom: 0;'>🌿 AgroVision</h2>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; color: #666; font-size: 14px;'>Domates Yaprak ve Meyve Teşhis Sistemi</p>", unsafe_allow_html=True)
 st.write("---")
 
@@ -48,10 +48,10 @@ if "secim" not in st.session_state:
 _, center_col, _ = st.columns([1, 6, 1])
 
 with center_col:
-    if st.button("📷 Kamera ile Canlı Çekim", use_container_width=True):
+    if st.button("📷 Take a photo", use_container_width=True):
         st.session_state.secim = "kamera"
     
-    if st.button("📁 Galeriden Fotoğraf Seç", use_container_width=True):
+    if st.button("📁 Select from gallery", use_container_width=True):
         st.session_state.secim = "galeri"
 
 uploaded_file = None
