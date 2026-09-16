@@ -1,10 +1,10 @@
 import streamlit as st
 import requests
 
-# Sayfa yapılandırması
+# Sayfa yapılandırması (Büyüteç ve yaprak simgesi ile)
 st.set_page_config(
     page_title="AgroVision", 
-    page_icon="🌿", 
+    page_icon="🔍🍃", 
     layout="centered",
     initial_sidebar_state="collapsed"
 )
@@ -32,8 +32,8 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Başlık ve Alt Başlık
-st.markdown("<h2 style='text-align: center; color: #2e7d32; margin-bottom: 0;'>🌿 AgroVision</h2>", unsafe_allow_html=True)
+# Başlık ve Alt Başlık (Büyüteç ve yaprak ikonlarıyla)
+st.markdown("<h2 style='text-align: center; color: #2e7d32; margin-bottom: 0;'>🔍🍃 AgroVision</h2>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; color: #666; font-size: 14px;'>Tomato Symptom Diagnosis System</p>", unsafe_allow_html=True)
 st.write("---")
 
@@ -57,7 +57,7 @@ if uploaded_file is not None:
         st.image(uploaded_file, caption="Aktarılan Saha Görseli", use_container_width=True)
         st.write("") 
         
-        if st.button("🚀 AgroVision ile Analiz Et", type="primary", use_container_width=True):
+        if st.button("🚀 Analyse with AgroVision", type="primary", use_container_width=True):
             with st.spinner("Yapay zeka patolog bitkiyi inceliyor, lütfen bekleyin..."):
                 try:
                     files = {"file": ("saha_gorseli.jpg", uploaded_file.getvalue(), "image/jpeg")}
@@ -91,6 +91,6 @@ else:
 # Geliştirici Bilgisi (Footer)
 st.markdown("""
     <div class="footer">
-        Developer: <b>saydin001-droid</b> | AgroVision AI Sistemleri
+        Developer: <b>saydin001-droidn</b> | AgroVision AI Sistemleri
     </div>
 """, unsafe_allow_html=True)
