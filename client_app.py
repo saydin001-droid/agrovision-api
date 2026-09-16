@@ -58,7 +58,7 @@ if uploaded_file is not None:
         st.write("") 
         
         if st.button("🚀 Analyse with AgroVision", type="primary", use_container_width=True):
-            with st.spinner("Yapay zeka patolog bitkiyi inceliyor, lütfen bekleyin..."):
+            with st.spinner("AI Agronomist bitkiyi inceliyor, lütfen bekleyin..."):
                 try:
                     files = {"file": ("saha_gorseli.jpg", uploaded_file.getvalue(), "image/jpeg")}
                     response = requests.post(CLOUD_API_URL, files=files, timeout=30)
