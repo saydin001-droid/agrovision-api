@@ -9,7 +9,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Mobil dostu özel CSS stilleri
+# Mobil dostu özel CSS stilleri (Butonları görsel olarak öne çıkarma)
 st.markdown("""
     <style>
     .stButton button {
@@ -42,23 +42,31 @@ st.markdown("<p style='text-align: center; color: #666;'>Domates Yaprak ve Meyve
 # Buluttaki Render FastAPI adresiniz
 CLOUD_API_URL = "https://agrovision-api.onrender.com/api/analiz-et"
 
-# Kullanıcıya seçim hakkı: Kamera ile çek veya Dosya/Galeri yükle
-secim = st.radio("Görüntü Kaynağı Seçin:", ["📷 Kameradan Çek", "📁 Galeriden / Dosyadan Yükle"], horizontal=True)
+# İki ayrı sütun halinde iki net buton / giriş alanı
+col1, col2 = st.columns(2)
 
 uploaded_file = None
 
-if secim == "📷 Kameradan Çek":
-    uploaded_file = st.camera_input("Bitkiyi kadraja yerleştirin ve çekin")
-else:
-    uploaded_file = st.file_uploader("Dosya seçin...", type=["jpg", "jpeg", "png"])
+with col1:
+    st.markdown("### 📷 Canlı Çekim")
+    camera_file = st.camera_input("Kamerayı Aç", label_visibility="collapsed")
+    if camera_file is not None:
+        uploaded_file = camera_file
 
+with col2:
+    st.markdown("### 📁 Dosya / Galeri")
+    gallery_file = st.file_uploader("Fotoğraf Seç", type=["jpg", "jpeg", "png"], label_visibility="collapsed")
+    if gallery_file is not None:
+        uploaded_file = gallery_file
+
+# Eğer herhangi bir yoldan görsel geldiyse
 if uploaded_file is not None:
-    # Seçilen veya çekilen görseli göster
+    st.write("---")
     st.image(uploaded_file, caption="Aktarılan Saha Görseli", use_container_width=True)
     
     st.write("") 
     
-    if st.button("🚀 AgroVision ile Analiz Et"):
+    if st.button("🚀 AgroVision ile Analiz Et", type="primary"):
         with st.spinner("Yapay zeka patolog bitkiyi inceliyor, lütfen bekleyin..."):
             try:
                 files = {"file": ("saha_gorseli.jpg", uploaded_file.getvalue(), "image/jpeg")}
@@ -85,4 +93,4 @@ if uploaded_file is not None:
             except Exception as e:
                 st.error(f"Bağlantı hatası: {e}")
 else:
-    st.info("💡 Kamerayı açarak veya fotoğraf yükleyerek analizi başlatabilirsiniz.")
+    st.info("💡 Yukarıdan ister kameranızı kullanarak anlık çekim yapın ister galeriden mevcut bir fotoğrafınızı seçin.")
