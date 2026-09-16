@@ -3,31 +3,26 @@ import requests
 
 # Sayfa yapılandırması
 st.set_page_config(
-    page_title="AgroVision Saha Asistanı", 
+    page_title="AgroVision", 
     page_icon="🌿", 
     layout="centered",
     initial_sidebar_state="collapsed"
 )
 
-# Mobil uyumlu ve butonları mobilde de yan yana tutan özel CSS stilleri
+# Mobil uyumlu, geniş ve eşit boyutta buton tasarımları için özel CSS
 st.markdown("""
     <style>
-    /* Mobilde sütunların alt alta kaymasını engeller, yan yana kalmasını sağlar */
-    [data-testid="column"] {
-        width: calc(50% - 0.5rem) !important;
-        flex: 1 1 calc(50% - 0.5rem) !important;
-        min-width: calc(50% - 0.5rem) !important;
-    }
     .stButton button {
         width: 100%;
         background-color: #2e7d32;
         color: white;
-        font-size: 14px;
+        font-size: 16px;
         font-weight: bold;
-        padding: 0.6rem 0.2rem;
+        padding: 0.8rem 1rem;
         border-radius: 12px;
         border: none;
         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        margin-bottom: 5px;
         transition: all 0.3s ease;
     }
     .stButton button:hover {
@@ -67,16 +62,12 @@ CLOUD_API_URL = "https://agrovision-api.onrender.com/api/analiz-et"
 if "secim" not in st.session_state:
     st.session_state.secim = None
 
-# İki butonu yan yana yerleştirelim
-col1, col2 = st.columns(2)
+# Butonları tam genişlikte ve alt alta yerleştirelim
+if st.button("📷 Kamera ile Canlı Çekim"):
+    st.session_state.secim = "kamera"
 
-with col1:
-    if st.button("📷 Kamera ile Çek"):
-        st.session_state.secim = "kamera"
-
-with col2:
-    if st.button("📁 Galeriden Seç"):
-        st.session_state.secim = "galeri"
+if st.button("📁 Galeriden Fotoğraf Seç"):
+    st.session_state.secim = "galeri"
 
 uploaded_file = None
 
