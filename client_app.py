@@ -34,7 +34,7 @@ st.markdown("""
 
 # Başlık ve Alt Başlık
 st.markdown("<h2 style='text-align: center; color: #2e7d32; margin-bottom: 0;'>🌿 AgroVision</h2>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; color: #666; font-size: 14px;'>Domates Yaprak ve Meyve Teşhis Sistemi</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #666; font-size: 14px;'>AI-Powered Tomato Pathology & Diagnosis System</p>", unsafe_allow_html=True)
 st.write("---")
 
 # Buluttaki Render FastAPI adresiniz
