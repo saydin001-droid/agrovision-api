@@ -51,7 +51,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Başlık ve Alt Başlık
-st.markdown("<h2 style='text-align: center; color: #2e7d32; margin-bottom: 0;'>🌿 AgroVision Saha Asistanı</h2>", unsafe_allow_html=True)
+st.markdown("<h2 style='text-align: center; color: #2e7d32; margin-bottom: 0;'>🌿 AgroVision</h2>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; color: #666; font-size: 14px;'>Domates Yaprak ve Meyve Teşhis Sistemi</p>", unsafe_allow_html=True)
 st.write("---")
 
@@ -63,10 +63,10 @@ if "secim" not in st.session_state:
     st.session_state.secim = None
 
 # Butonları tam genişlikte ve alt alta yerleştirelim
-if st.button("📷 Kamera ile Canlı Çekim"):
+if st.button("📷 Take a photo"):
     st.session_state.secim = "kamera"
 
-if st.button("📁 Galeriden Fotoğraf Seç"):
+if st.button("📁 Select a photo"):
     st.session_state.secim = "galeri"
 
 uploaded_file = None
