@@ -33,7 +33,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Başlık ve Alt Başlık (Büyüteç ve yaprak ikonlarıyla)
-st.markdown("<h2 style='text-align: center; color: #2e7d32; margin-bottom: 0;'>🍃 AgroVision</h2>", unsafe_allow_html=True)
+st.markdown("<h2 style='text-align: center; color: #2e7d32; margin-bottom: 0;'>🔍🍃 AgroVision</h2>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; color: #666; font-size: 14px;'>Tomato Symptom Diagnosis System</p>", unsafe_allow_html=True)
 st.write("---")
 
@@ -45,7 +45,7 @@ _, center_col, _ = st.columns([1, 6, 1])
 
 with center_col:
     uploaded_file = st.file_uploader(
-        "📸 Upload / Take a photo", 
+        "📸 Fotoğraf Yükle / Çek", 
         type=["jpg", "jpeg", "png"]
     )
 
@@ -57,8 +57,8 @@ if uploaded_file is not None:
         st.image(uploaded_file, caption="Aktarılan Saha Görseli", use_container_width=True)
         st.write("") 
         
-        if st.button("🚀 Analyse with AgroVision", type="primary", use_container_width=True):
-            with st.spinner("AI Agronomist bitkiyi inceliyor, lütfen bekleyin..."):
+        if st.button("🚀 AgroVision ile Analiz Et", type="primary", use_container_width=True):
+            with st.spinner("Yapay zeka patolog bitkiyi inceliyor, lütfen bekleyin..."):
                 try:
                     files = {"file": ("saha_gorseli.jpg", uploaded_file.getvalue(), "image/jpeg")}
                     response = requests.post(CLOUD_API_URL, files=files, timeout=30)
@@ -91,6 +91,6 @@ else:
 # Geliştirici Bilgisi (Footer)
 st.markdown("""
     <div class="footer">
-        Developer: <b>saydin001-droidn</b> | AgroVision AI Systems
+        Geliştirici: <b>Serkan Aydın</b> | AgroVision AI Sistemleri
     </div>
 """, unsafe_allow_html=True)
